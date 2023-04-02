@@ -5,22 +5,34 @@
 #include <condition_variable>
 
 using namespace std;
-
+static int studentCounter;
+static int teacherCounter;
 //  visitor class to store visitor_category
 class Visitor
 {
 public:
     string visitor_category;
+    int timeEntered;
+    int visitorCount = 0;
     // constructor to assign vistor_category
-    Visitor(string category)
+    Visitor(string category, int time)
     {
         visitor_category = category;
+        timeEntered = time;
+        if (visitor_category == "Student")
+        {
+            visitorCount = ++studentCounter;
+        }
+        else
+        {
+            visitorCount = ++teacherCounter;
+        }
     }
 };
 
 queue<Visitor> student_queue, teacher_queue; // queue to hold Visitir class objects
 mutex m;                                     // queue mutex
-condition_variable cv;
+condition_variable cv;                       // for notifying when visitor arrived and book issued
 
 // function to issue book  and  show on console
 void issueBook(Visitor v)
@@ -30,12 +42,13 @@ void issueBook(Visitor v)
     cout << "Issued  book to ";
     if (v.visitor_category == "Student")
     {
-        cout << "student\n";
+        cout << "student number: ";
     }
     else
     {
-        cout << "teacher\n";
+        cout << "teacher number: ";
     }
+    cout << v.visitorCount << " arrived at time: " << v.timeEntered << endl;
 }
 
 void chooseVisitor()
@@ -67,7 +80,7 @@ void chooseVisitor()
 
 void addVisitor(Visitor v)
 {
-    m.lock();
+
     if (v.visitor_category == "Student")
     {
         student_queue.push(v);
@@ -77,26 +90,28 @@ void addVisitor(Visitor v)
         teacher_queue.push(v);
     }
 
-    m.unlock();
-    cv.notify_one(); // it will notify only one thread that lock is released and that willcheck condition and proceed
+    cv.notify_one(); // it will notify only one thread that someone entered queue
 }
 
 int main()
 {
     thread t(chooseVisitor);
-
+    // to add student and teacher randomly in library queue
+    int time = 0;
     while (true)
     {
+
         // Add new visitors to the library at random times
         if (rand() % 2 == 0) // high probabilty to add student asmore chance to get %2=0 then %3
         {
-            addVisitor(Visitor("Student"));
+            addVisitor(Visitor("Student", time));
         }
-        if (rand() % 3 == 0)
+        if (rand() % 3 == 0) // and this is not if els ladder these are 2 sperat if which means two students can aarive at same time
         {
-            addVisitor(Visitor("Teacher"));
+            addVisitor(Visitor("Teacher", time));
         }
         this_thread::sleep_for(chrono::seconds(1));
+        time++;
     }
 
     t.join();
