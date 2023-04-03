@@ -57,15 +57,15 @@ void teacher()
         }
         cout << " on table" << endl;
 
-        cv.notify_all(); // this will notify(invoke) all other threads cc(conditional vaariable)
-                         // and they will check further the condition is satisfied , in short table is realesed now for  students to give exam
+        cv.notify_all(); // this will notify(invoke) all other threads cv(conditional vaariable)
+                         // and they will check further the condition is satisfied , in short- table is realesed now for  students to give assignment
 
         unique_lock<mutex> lock(m); // unique_lock object is used as argument in cv(conditional variable) ,otherwise we could have just used m.lock();
 
-        cv.wait(lock); // will wait for student to complete the exam
+        cv.wait(lock); // will wait for student to complete the assignment and notify
         cout << "Teacher collected completed assignment" << endl
              << endl;
-        // setting everything to false after comletion
+        // setting everything unuavailable after comletion
         pen_available = false;
         paper_available = false;
         question_paper_available = false;
@@ -81,12 +81,12 @@ void student(int id, bool &item1_available, bool &item2_available)
         cv.wait(lock, []
                 { return (pen_available && paper_available) ||
                          (pen_available && question_paper_available) ||
-                         (paper_available && question_paper_available); }); // this will check for lock and then check the
+                         (paper_available && question_paper_available); }); // this will check for lock and then check then check if teacher made  2 things available
                                                                                                                                                                  //    condition if two things  things available together not , if available only then it will  proceed
 
-        if (item1_available && item2_available) // if item available then startdoing exam otherwise realease the lock
+        if (item1_available && item2_available) // if item available then startdoing assignment otherwise realease the lock
         {
-            // Checking individual thing available and printiing on console what things are got to start dong exam
+            // Checking individual thing available and printiing on console what things are got to start dong assignment
             cout << "Student " << id << " has taken ";
             if (pen_available)
             {
@@ -105,10 +105,11 @@ void student(int id, bool &item1_available, bool &item2_available)
             }
             cout << "started doing the assignment" << endl;
 
-            this_thread::sleep_for(chrono::seconds(5)); // sleep for 5 seconds to stimulate writing an exam
+            this_thread::sleep_for(chrono::seconds(5)); // sleep for 5 seconds to stimulate writing an assignment
             lock.unlock();
-            cv.notify_all(); // this will notify(invoke) all other threads cc(conditional vaariable)
-            // and they will check further the condition is satisfied , in short table is realesed now for other student to give exam
+            cv.notify_all(); // tellimg teacher assignment is done on completeion as per question
+            // this will notify(invoke) all other threads cc(conditional vaariable)
+            // and they will check further the condition is satisfied , in short -shared table is realesed now for other student to give assignment
 
             cout << "Student " << id << " completed the assignment" << endl;
         }

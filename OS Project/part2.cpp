@@ -102,11 +102,12 @@ int main()
     {
 
         // Add new visitors to the library at random times
-        if (rand() % 2 == 0) // high probabilty to add student asmore chance to get %2=0 then %3
+        if (rand() % 2 == 0) // high probabilty to add student asmore chance to get %2=0 then %5 to
+        // mmodified time incrementation and  used %5 for teacher to reduce the nummber of teachers coming
         {
             addVisitor(Visitor("Student", time));
         }
-        if (rand() % 3 == 0) // and this is not if els ladder these are 2 sperat if which means two students can aarive at same time
+        if (rand() % 5 == 0) // and this is not if els ladder these are 2 sperat if which means two students can aarive at same time
         {
             addVisitor(Visitor("Teacher", time));
         }
