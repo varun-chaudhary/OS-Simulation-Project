@@ -106,13 +106,16 @@ int main()
         // mmodified time incrementation and  used %5 for teacher to reduce the nummber of teachers coming
         {
             addVisitor(Visitor("Student", time));
+            time++;
         }
         if (rand() % 5 == 0) // and this is not if els ladder these are 2 sperat if which means two students can aarive at same time
         {
             addVisitor(Visitor("Teacher", time));
+            time++;
         }
         this_thread::sleep_for(chrono::seconds(1));
-        time++;
+        // time++; this will increase time in every iteration even if no one entered  commenting this and
+        // incrementing time only if someone enter for better understanding
     }
 
     t.join();
