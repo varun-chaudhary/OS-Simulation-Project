@@ -100,6 +100,7 @@ int main()
     int time = 0;
     while (true)
     {
+        bool check_if_timealready_incremented = false; // to make sure time not increment twice if both student and teacher come in same iteration
 
         // Add new visitors to the library at random times
         if (rand() % 2 == 0) // high probabilty to add student asmore chance to get %2=0 then %5 to
@@ -107,11 +108,15 @@ int main()
         {
             addVisitor(Visitor("Student", time));
             time++;
+            check_if_timealready_incremented = true;
         }
-        if (rand() % 5 == 0) // and this is not if els ladder these are 2 sperat if which means two students can aarive at same time
+        if (rand() % 5 == 0) // and this is not if else ladder these are 2 sperate if which means two students can arrive at same time
         {
             addVisitor(Visitor("Teacher", time));
-            time++;
+            if (!check_if_timealready_incremented)
+            {
+                time++;
+            }
         }
         this_thread::sleep_for(chrono::seconds(1));
         // time++; this will increase time in every iteration even if no one entered  commenting this and
