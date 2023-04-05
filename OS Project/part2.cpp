@@ -98,28 +98,35 @@ int main()
     thread t(chooseVisitor);
     // to add student and teacher randomly in library queue
     int time = 0;
+    int num_of_visitors = 0; // ta make the program finite
     while (true)
     {
         bool check_if_timealready_incremented = false; // to make sure time not increment twice if both student and teacher come in same iteration
+        if (num_of_visitors >= 20)
+        {
+            break;
+        }
 
         // Add new visitors to the library at random times
         if (rand() % 2 == 0) // high probabilty to add student asmore chance to get %2=0 then %5 to
         // mmodified time incrementation and  used %5 for teacher to reduce the nummber of teachers coming
         {
             addVisitor(Visitor("Student", time));
-            time++;
-            check_if_timealready_incremented = true;
+            // time++;
+            num_of_visitors++;
+            // check_if_timealready_incremented = true;
         }
         if (rand() % 5 == 0) // and this is not if else ladder these are 2 sperate if which means two students can arrive at same time
         {
             addVisitor(Visitor("Teacher", time));
-            if (!check_if_timealready_incremented)
-            {
-                time++;
-            }
+            num_of_visitors++;
+            // if (!check_if_timealready_incremented)
+            // {
+            //     time++;
+            // }
         }
         this_thread::sleep_for(chrono::seconds(1));
-        // time++; this will increase time in every iteration even if no one entered  commenting this and
+        time++; // this will increase time in every iteration even if no one entered  commenting this and
         // incrementing time only if someone enter for better understanding
     }
 
