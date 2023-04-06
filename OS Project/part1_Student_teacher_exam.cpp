@@ -9,6 +9,7 @@ condition_variable cv;
 bool pen_available = false;
 bool paper_available = false;
 bool question_paper_available = false;
+int num_of_iteration = 0;
 
 void teacher()
 {
@@ -65,6 +66,11 @@ void teacher()
         cv.wait(lock); // will wait for student to complete the assignment and notify
         cout << "Teacher collected completed assignment" << endl
              << endl;
+        num_of_iteration++;
+        if (num_of_iteration > 5)
+        {
+            exit(0);
+        }
         // setting everything unuavailable after comletion
         pen_available = false;
         paper_available = false;
