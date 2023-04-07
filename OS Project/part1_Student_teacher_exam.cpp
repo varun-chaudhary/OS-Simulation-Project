@@ -30,10 +30,10 @@ void teacher()
             switch (random_choice)
             {
             case 0:
-                cout << "pen and paper on the table\n ";
+                cout << "pen and paper on the table\n";
                 if (std1_done) // checking if student with alternate thing is already done or not
                 {
-                    cout << "but student 1 (with question paper) is already done\n\n\n";
+                    cout << "but student 1 (with question paper) is already done\n\n";
                     continue;
                 }
                 else
@@ -48,7 +48,7 @@ void teacher()
                 cout << "paper and question paper on the table\n";
                 if (std2_done)
                 {
-                    cout << "but student 2 (with pen) is already done\n\n\n";
+                    cout << "but student 2 (with pen) is already done\n\n";
                     continue;
                 }
                 else
@@ -63,7 +63,7 @@ void teacher()
                 cout << "pen and question paper on the table\n";
                 if (std3_done)
                 {
-                    cout << "but student 3  (with paper) is already done\n\n\n";
+                    cout << "but student 3  (with paper) is already done\n\n";
                     continue;
                 }
                 else
@@ -106,13 +106,13 @@ void student(int id, bool &item1_available, bool &item2_available)
                          (paper_available && question_paper_available); }); // this will check for lock and then check then check if teacher made  2 things available
                                                                                                                                                                  //    condition if two things  things available together not , if available only then it will  proceed
 
-        if (item1_available && item2_available) // if item available then startdoing assignment otherwise realease the lock
+        if (item1_available && item2_available) // if required  item are  available then startdoing assignment otherwise realease the lock
         {
             // Checking individual thing available and printiing on console what things are got to start dong assignment
             cout << "Student " << id << " has taken ";
             if (pen_available && paper_available)
             {
-                cout << "pen and paper";
+                cout << "pen and paper ";
                 std1_done = true;
                 pen_available = false;
                 paper_available = false;
@@ -131,7 +131,7 @@ void student(int id, bool &item1_available, bool &item2_available)
                 question_paper_available = false;
                 pen_available = false;
             }
-            cout << "and started doing the assignment" << endl;
+            cout << "and started doing the assignment " << endl;
 
             this_thread::sleep_for(chrono::seconds(5)); // sleep for 5 seconds to stimulate writing an assignment
             cout << "Student " << id << " completed the assignment" << endl
